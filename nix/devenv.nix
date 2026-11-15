@@ -64,8 +64,9 @@ in
 {
   # Disable automatic .env loading so agent shells stay deterministic.
   # NOTE: do not pass `-O dotenv.enable:bool false` on the command line:
-  # combined with the out-of-tree binding, current devenv drops the whole
-  # profile from PATH. This declaration replaces that flag.
+  # combined with the out-of-tree binding, devenv (verified through
+  # 2.4.0) drops the whole profile from PATH. This declaration replaces
+  # that flag.
   dotenv.enable = false;
 
   # Tools available in the shell. Add project tooling here instead of
@@ -117,19 +118,6 @@ in
   scripts.hello = {
     description = "Example template script; shows cwd and DEVENV_ROOT";
     exec = "${./scripts/hello.sh}";
-  };
-
-  # WORKAROUND (devenv 2.3.x, msks/klangk #3444 pattern): the RunMode::All
-  # scheduler adds prerequisites of every visited task — including the
-  # skipped devenv:enterTest, whose prerequisite devenv:git-hooks:run is
-  # the full hook suite — so a failing hook aborts `devenv shell` before
-  # it opens. Clearing the `before` edge keeps the suite out of the
-  # shell's task graph (mkForce replaces the upstream list; a plain
-  # `before = [ ]` concatenates and changes nothing). The commit-time
-  # hook keeps enforcing the suite on `git commit`. Remove once an
-  # upstream release stops scheduling prerequisites of skipped tasks.
-  tasks."devenv:git-hooks:run" = lib.mkIf config.git-hooks.enable {
-    before = lib.mkForce [ ];
   };
 
   # --- Pre-commit hooks: the msks set by default ---

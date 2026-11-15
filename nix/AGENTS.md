@@ -79,8 +79,8 @@ After `allow`, plain `devenv shell` works from anywhere in the project.
   ```
 
   Do NOT add `-O ...` overrides: with the out-of-tree binding, devenv
-  (≤ 2.3.1) silently drops the profile from PATH. dotenv is already
-  disabled in `devenv.nix`.
+  (verified through 2.4.0) silently drops the profile from PATH. dotenv
+  is already disabled in `devenv.nix`.
 
 - Add tools by editing `packages` in `devenv.nix`, never by installing
   packages globally.

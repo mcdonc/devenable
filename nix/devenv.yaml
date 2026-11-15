@@ -1,8 +1,8 @@
-# devenv inputs for this project. Keep this file minimal: pins and inputs
-# only. Per-project configuration belongs in devenv.nix.
+# devenv inputs for this project. Keep this file minimal: pins, inputs,
+# and the CLI floor. Per-project configuration belongs in devenv.nix.
 #
-# After editing, run `devenv update` from the project root and commit the
-# resulting root-level devenv.lock.
+# After editing inputs, run `devenv update` from the project root and
+# commit the resulting root-level devenv.lock.
 inputs:
   git-hooks:
     url: github:cachix/git-hooks.nix
@@ -11,3 +11,9 @@ inputs:
         follows: nixpkgs
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling
+# Minimum devenv this template supports: out-of-tree `allow` bindings
+# (2.2+) and the 2.4 fix that keeps the hook suite out of `devenv shell`
+# on entry (#3184). ADVISORY: current CLIs (through 2.4.0) do not reject
+# on this constraint — treat it as documentation; the real requirement
+# lives in AGENTS.md.
+version: ">=2.4"

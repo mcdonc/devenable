@@ -23,9 +23,10 @@ git add devenv devenv.lock
 
 ## Design
 
-- **Out-of-tree `path:` source.** The project root is bound to `./devenv`
-  with `devenv allow` (devenv ≥ 2.2). Plain `devenv shell` then works from
-  the root; the binding is stored per-user, not in the project.
+- **Out-of-tree `path:` source.** The project root is bound to `./nix`
+  with `devenv allow` (devenv ≥ 2.4, enforced by `version` in
+  `nix/devenv.yaml`). Plain `devenv shell` then works from the root; the
+  binding is stored per-user, not in the project.
 - **Root stays clean.** The only devenv artifacts at the project root are
   `devenv.lock` (committed — it pins inputs) and `.devenv/` (untracked,
   excluded via `.git/info/exclude` so no root file is created).
