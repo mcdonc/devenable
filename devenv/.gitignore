@@ -1,0 +1,3 @@
+# Personal, uncommitted overrides. devenv loads these automatically.
+devenv.local.nix
+devenv.local.yaml

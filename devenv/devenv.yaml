@@ -1,0 +1,13 @@
+# devenv inputs for this project. Keep this file minimal: pins and inputs
+# only. Per-project configuration belongs in devenv.nix.
+#
+# After editing, run `devenv update` from the project root and commit the
+# resulting root-level devenv.lock.
+inputs:
+  git-hooks:
+    url: github:cachix/git-hooks.nix
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
+  nixpkgs:
+    url: github:cachix/devenv-nixpkgs/rolling
