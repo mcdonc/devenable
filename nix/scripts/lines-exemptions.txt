@@ -1,4 +1,4 @@
-# Module-length exemptions (devenv/scripts/lines-gate.sh).
+# Module-length exemptions (nix/scripts/lines-gate.sh).
 #
 # One path per line, repo-relative; everything after the path is
 # the reason. Seeded empty.

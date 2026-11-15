@@ -5,7 +5,7 @@
 # The gate does one thing — it fails, naming the file and its line
 # count. It never edits, splits, or suggests.
 #
-# The exemption list is devenv/scripts/lines-exemptions.txt (seeded
+# The exemption list is nix/scripts/lines-exemptions.txt (seeded
 # empty): one path per line, everything after the path is the reason.
 # The list only shrinks — an entry whose file is at or under the
 # ceiling fails the gate as stale, and the commit that brings a listed
@@ -13,7 +13,7 @@
 #
 # Usage: lines-gate.sh [ROOT] [--exemptions FILE]
 #   ROOT defaults to this script's repo root. The exemption file
-#   defaults to ROOT/devenv/scripts/lines-exemptions.txt; a missing
+#   defaults to ROOT/nix/scripts/lines-exemptions.txt; a missing
 #   file reads as the empty list. bash 3.2 compatible — no mapfile,
 #   no associative arrays, macOS hosts included.
 #
@@ -56,7 +56,7 @@ if [ "${#positional[@]}" -gt 0 ]; then
   root=$(cd "${positional[0]}" && pwd)
 fi
 if [ -z "$exemptions" ]; then
-  exemptions="$root/devenv/scripts/lines-exemptions.txt"
+  exemptions="$root/nix/scripts/lines-exemptions.txt"
 fi
 
 # Scanned set: the graded sources, tracked OR untracked-but-present
@@ -69,7 +69,7 @@ while IFS= read -r f; do
   files+=("$f")
 done < <(git -C "$root" ls-files --cached --others --exclude-standard "$GATE_GLOB")
 if [ "${#files[@]}" -eq 0 ]; then
-  echo "lines-gate: no .py files found for '$GATE_GLOB' — is $root the repo root, and is GATE_GLOB in devenv/scripts/lines-gate.sh set for this project?" >&2
+  echo "lines-gate: no .py files found for '$GATE_GLOB' — is $root the repo root, and is GATE_GLOB in nix/scripts/lines-gate.sh set for this project?" >&2
   exit 1
 fi
 

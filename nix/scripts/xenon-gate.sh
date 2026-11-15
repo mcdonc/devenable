@@ -31,7 +31,7 @@ else
     files+=("$f")
   done < <(git ls-files --cached --others --exclude-standard "${GATE_GLOBS[@]}")
   if [ "${#files[@]}" -eq 0 ]; then
-    echo "xenon-gate: no graded .py files found — run from the repo root, and check GATE_GLOBS in devenv/scripts/xenon-gate.sh" >&2
+    echo "xenon-gate: no graded .py files found — run from the repo root, and check GATE_GLOBS in nix/scripts/xenon-gate.sh" >&2
     exit 1
   fi
   set -- "${thresholds[@]}" "${files[@]}"
@@ -51,7 +51,7 @@ if grep -q 'WARNING:xenon:cannot parse' "$log"; then
 xenon-gate: FAIL — xenon skipped at least one graded file it cannot
 parse (on its own this exits 0). The file(s) above left the complexity
 gate un-graded; the gate's parser is probably older than the code's
-syntax (see the xenon note in devenv/devenv.nix).
+syntax (see the xenon note in nix/devenv.nix).
 MSG
   exit 1
 fi

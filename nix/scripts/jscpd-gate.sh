@@ -29,7 +29,7 @@ while IFS= read -r f; do
   files+=("$f")
 done < <(git ls-files --cached --others --exclude-standard "${GATE_GLOBS[@]}")
 if [ "${#files[@]}" -eq 0 ]; then
-  echo "jscpd-gate: no graded .py files found — run from the repo root, and check GATE_GLOBS in devenv/scripts/jscpd-gate.sh" >&2
+  echo "jscpd-gate: no graded .py files found — run from the repo root, and check GATE_GLOBS in nix/scripts/jscpd-gate.sh" >&2
   exit 1
 fi
 

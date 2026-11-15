@@ -4,7 +4,7 @@
 #   - Commands run with cwd = project root, so relative paths in commands,
 #     processes, and scripts point at the source tree.
 #   - Nix path literals resolve relative to this file:
-#       ./x  -> devenv/x   (template-owned)
+#       ./x  -> nix/x   (template-owned)
 #       ../x -> <project root>/x   (source tree)
 #   - $DEVENV_ROOT is the project root.
 {
@@ -112,7 +112,7 @@ in
     export PYTHONPATH="$DEVENV_ROOT/sample/src''${PYTHONPATH:+:$PYTHONPATH}"
   '';
 
-  # Template-owned scripts, wired from devenv/scripts/. They become
+  # Template-owned scripts, wired from nix/scripts/. They become
   # commands inside the shell (e.g. `devenv shell -- hello`).
   scripts.hello = {
     description = "Example template script; shows cwd and DEVENV_ROOT";
@@ -135,7 +135,7 @@ in
   # --- Pre-commit hooks: the msks set by default ---
   # Runs at commit time (not on shell entry, see the task workaround
   # above). The script-based gates grade the file set configured as
-  # GATE_GLOBS inside each gate script in devenv/scripts/ — the
+  # GATE_GLOBS inside each gate script in nix/scripts/ — the
   # configuring agent points those at this project's Python package,
   # or deletes gates the project does not want.
   git-hooks.hooks = {
@@ -157,27 +157,27 @@ in
       pass_filenames = true;
     };
     # Complexity gate: rank A everywhere. pass_filenames = false — the
-    # hook grades the full gate set via devenv/scripts/xenon-gate.sh
+    # hook grades the full gate set via nix/scripts/xenon-gate.sh
     # (a staged subset's average can exceed rank A while the whole tree
     # passes); `files` stays as the run trigger.
     xenon = {
       enable = true;
       name = "xenon";
-      entry = "devenv/scripts/xenon-gate.sh";
+      entry = "nix/scripts/xenon-gate.sh";
       files = "\\.py$";
       language = "system";
       pass_filenames = false;
     };
     # Lines gate: no module past the ceiling the gate script carries
     # (1000 today; it only goes down). Over-ceiling files live on the
-    # shrinking devenv/scripts/lines-exemptions.txt list, which also
+    # shrinking nix/scripts/lines-exemptions.txt list, which also
     # triggers the hook — a list edit is exactly when the gate should
     # re-run. Whole-tree like xenon above; `files` stays as the trigger.
     lines-gate = {
       enable = true;
       name = "lines-gate";
-      entry = "bash devenv/scripts/lines-gate.sh";
-      files = "\\.py$|devenv/scripts/lines-exemptions\\.txt$";
+      entry = "bash nix/scripts/lines-gate.sh";
+      files = "\\.py$|nix/scripts/lines-exemptions\\.txt$";
       language = "system";
       pass_filenames = false;
     };
@@ -188,7 +188,7 @@ in
     jscpd = {
       enable = true;
       name = "jscpd";
-      entry = "devenv/scripts/jscpd-gate.sh";
+      entry = "nix/scripts/jscpd-gate.sh";
       files = "\\.py$";
       language = "system";
       pass_filenames = false;
@@ -208,7 +208,7 @@ in
     deferred-imports = {
       enable = true;
       name = "deferred-imports";
-      entry = "${config.languages.python.package}/bin/python devenv/scripts/check_deferred_imports.py";
+      entry = "${config.languages.python.package}/bin/python nix/scripts/check_deferred_imports.py";
       files = "\\.py$";
       language = "system";
       pass_filenames = true;
@@ -220,7 +220,7 @@ in
     import-cycles = {
       enable = true;
       name = "import-cycles";
-      entry = "${config.languages.python.package}/bin/python devenv/scripts/check_import_cycles.py";
+      entry = "${config.languages.python.package}/bin/python nix/scripts/check_import_cycles.py";
       files = "\\.py$";
       language = "system";
       pass_filenames = false;

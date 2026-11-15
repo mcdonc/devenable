@@ -1,4 +1,4 @@
-# devenv/ — this project's development environment
+# nix/ — this project's development environment
 
 This directory is this project's devenv configuration, copied from the
 `devenable` template and then configured for this project. The project root
@@ -10,7 +10,7 @@ also lands at the root and must stay untracked.
 
 ```bash
 cd <project root>
-devenv --from path:./devenv allow   # binds this directory to the config
+devenv --from path:./nix allow   # binds this directory to the config
 printf '%s\n' '.devenv/' '.pre-commit-config.yaml' '.prettierignore' >> .git/info/exclude
 ```
 
@@ -22,7 +22,7 @@ After `allow`, plain `devenv shell` works from anywhere in the project.
    `packages`, `env`, `enterShell`, `processes`/`tasks` as needed. Remove
    unused sections and the example `hello` script.
    For Python projects: point `GATE_GLOBS`/`GATE_GLOB` at the top of each
-   gate script in `devenv/scripts/` (xenon, jscpd, lines-gate) and
+   gate script in `nix/scripts/` (xenon, jscpd, lines-gate) and
    `PKG_ROOT`/`PACKAGE` in `check_import_cycles.py` at the project's
    package — the template ships them pointed at its own sample project
    (`sample/src`). For non-Python projects, delete the Python-only hooks
@@ -32,7 +32,7 @@ After `allow`, plain `devenv shell` works from anywhere in the project.
 
    ```bash
    cd <project root>
-   devenv --from path:./devenv allow
+   devenv --from path:./nix allow
    devenv --quiet shell -- true
    ```
 
@@ -52,22 +52,22 @@ After `allow`, plain `devenv shell` works from anywhere in the project.
      ```markdown
      ## Development environment
 
-     This project uses devenv with an out-of-tree config in `devenv/`
-     (full conventions in `devenv/AGENTS.md`). Run commands from the
+     This project uses devenv with an out-of-tree config in `nix/`
+     (full conventions in `nix/AGENTS.md`). Run commands from the
      project root:
 
          devenv --quiet shell -- <command>
 
      Never pass `-O` option overrides: under the out-of-tree binding
      they make devenv silently drop the profile from the shell.
-     dotenv is already disabled in `devenv/devenv.nix`.
-     Fresh clone: `devenv --from path:./devenv allow`.
+     dotenv is already disabled in `nix/devenv.nix`.
+     Fresh clone: `devenv --from path:./nix allow`.
      ```
 
    - Add a short "Development environment" section to the project
      README for humans: the `devenv allow` fresh-clone step, and
      `devenv shell` to enter the environment.
-6. Commit `devenv/` (including this file) together with the root
+6. Commit `nix/` (including this file) together with the root
    `AGENTS.md`/README changes.
 
 ## Conventions (all agents)
@@ -87,7 +87,7 @@ After `allow`, plain `devenv shell` works from anywhere in the project.
 - Paths: commands run with cwd = project root; Nix path literals inside
   `devenv.nix` resolve relative to that file (`./x` = template-owned,
   `../x` = source tree); `$DEVENV_ROOT` is the project root.
-- Template-owned scripts live in `devenv/scripts/` and are wired through
+- Template-owned scripts live in `nix/scripts/` and are wired through
   `scripts.<name>.exec` in `devenv.nix`.
 - Update inputs with `devenv update` from the project root, then commit the
   regenerated `devenv.lock`.
@@ -95,7 +95,7 @@ After `allow`, plain `devenv shell` works from anywhere in the project.
 - Git hooks default to the `msks` set: ruff, shfmt, shellcheck, shebang
   guard, markdownlint, actionlint, trufflehog, nixfmt, check-toml,
   yamllint, prettier, plus the script-based gates (xenon, lines-gate,
-  jscpd, deferred-imports, import-cycles) in `devenv/scripts/`. They run
+  jscpd, deferred-imports, import-cycles) in `nix/scripts/`. They run
   at `git commit` time — a failing hook does not block `devenv shell`.
   A deliberate offender is committed with `git commit --no-verify` and a
   recorded reason — the escape hatch is recording, never suppression
